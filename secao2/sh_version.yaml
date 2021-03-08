@@ -1,0 +1,19 @@
+---
+  - name: Obter Versao IOS dos CBR8
+    hosts: csr
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: TASK 1 - OBTER VERSAO IOS
+        ios_command:
+          commands:
+            - show version
+        register: ios_out
+
+      - name: TASK 2 - IMPRIMIR VERSAO IOS
+        debug: msg="{{ios_out["stdout_lines"][0][0]}}"
+
+      - name: TASK 3 - SALVAR ARQUIVOS
+        local_action: copy content={{ ios_out["stdout_lines"][0][0] }} dest=$HOME/ansible/meu_ansible_{{ inventory_hostname }}.txt
